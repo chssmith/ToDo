@@ -40,9 +40,7 @@ public class ToDoDataSource {
         content.setId(insertID);
     }
 
-    public void deleteToDo(ToDoContent content) {
-        long id = content.getId();
-
+    public void deleteToDo(long id) {
         System.out.println("Deleting entry with ID: " + id);
 
         database.delete(ToDoContract.ToDoEntry.TABLE_NAME,

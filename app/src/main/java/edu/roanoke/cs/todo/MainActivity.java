@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     public static final String TITLE_MESSAGE = "edu.roanoke.cs.todo.TITLE";
-    public static final String DESC_MESSAGE = "edu.roanoke.cs.todo.DESCRIPTION";
+    public static final String DESC_MESSAGE  = "edu.roanoke.cs.todo.DESCRIPTION";
+    public static final String ID_MESSAGE    = "edu.roanoke.cs.todo.ID";
     private ArrayList<ToDoContent> model;
     private ArrayAdapter<ToDoContent> adapter;
     private ToDoDataSource DAO;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
                 ToDoContent content = (ToDoContent)list.getItemAtPosition(position);
                 intent.putExtra(TITLE_MESSAGE, content.getTitle());
                 intent.putExtra(DESC_MESSAGE, content.getDescription());
+                intent.putExtra(ID_MESSAGE, content.getId());
                 startActivity(intent);
             }
         });
@@ -56,6 +58,10 @@ public class MainActivity extends Activity {
 
             ToDoContent newEntry = new ToDoContent(title.getText().toString(),
                     desc.getText().toString());
+            title.setText("");
+            desc.setText("");
+            title.requestFocus();
+
             DAO.addToDo(newEntry);
             adapter.add(newEntry);
         }
@@ -63,6 +69,9 @@ public class MainActivity extends Activity {
     }
     protected void onResume() {
         DAO.open();
+        model = DAO.getAllToDo();
+        adapter = new ArrayAdapter<ToDoContent>(this, android.R.layout.simple_list_item_1, model);
+        list.setAdapter(adapter);
         super.onResume();
     }
 
@@ -70,5 +79,7 @@ public class MainActivity extends Activity {
         DAO.close();
         super.onPause();
     }
+
+
 }
 
